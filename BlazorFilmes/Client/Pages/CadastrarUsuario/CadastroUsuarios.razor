@@ -1,0 +1,135 @@
+
+@page "/usuario/cadastro"
+@inject IJSRuntime JSRuntime;
+@using System.Net.Http
+@inject HttpClient Http
+
+<style>
+
+    .tamanho {
+        margin-bottom: 25px;
+        display: inline-block;
+    }
+    .tamanho2 {
+        margin-top: 25px;
+    }
+    .link{
+        color: white;
+        text-decoration: none !important;  
+    }
+    .link:hover{
+        color: white !important;
+    }
+    .btn{
+        width: 150px;
+        margin: 20px;
+    }   
+    
+</style>
+
+<h3 class="tamanho">Cadastrar Usuário</h3>
+
+<EditForm Model="@cadastro" OnValidSubmit="HandleValidSubmit">
+    <DataAnnotationsValidator/>
+    
+    <div class="form-group">
+        <div class="row">
+            <div class="col-md-2">
+                <div class="form-group" >
+                    <label>Digite o Título</label>
+                    <InputSelect class="form-control" placeholder="Título" @bind-Value="@cadastro.Titulo">
+                        <option selected>Escolher...</option>
+                        <option>Mr</option>
+                        <option>Mrs</option>
+                    </InputSelect>                       
+                    <ValidationMessage For="@( () => cadastro.Titulo )" />                        
+                </div>
+            </div>         
+            <div class="col-md-5">            
+                <div class="form-group">
+                    <label>Digite seu Primeiro Nome</label>
+                    <InputText class="form-control" placeholder="Primeiro Nome" @bind-Value="@cadastro.PrimeiroNome" />
+                    <ValidationMessage For="@( () => cadastro.PrimeiroNome )" />
+                </div>
+            </div>          
+            <div class="col-md-5">
+                <div class="form-group">
+                    <label>Digite seu Segundo Nome</label>
+                    <InputText class="form-control" placeholder="Segundo Nome" @bind-Value="@cadastro.SegundoNome" />
+                    <ValidationMessage For="@( () => cadastro.SegundoNome )" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Digite sua Data de Aniversário</label>
+                    <InputDate class="form-control" placeholder="Data de Aniversário" @bind-Value="@cadastro.DataDeAniversario" />
+                    <ValidationMessage For="@( () => cadastro.DataDeAniversario )" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                    <label>Digite seu e-Mail</label>
+                    <InputText class="form-control" placeholder="e-Mail" @bind-Value="@cadastro.Email" />
+                    <ValidationMessage For="@( () => cadastro.Email )" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label>Digite sua Senha</label>
+                    <InputText type=password class="form-control" placeholder="Senha" @bind-Value="@cadastro.Senha" />
+                    <ValidationMessage For="@( () => cadastro.Senha )" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-group">
+                <label>Confirme sua Senha</label>
+                    <InputText type="password" class="form-control" placeholder="Confirmar Senha" @bind-Value="@cadastro.ConfirmarSenha" />
+                    <ValidationMessage For="@( () => cadastro.ConfirmarSenha )" />
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="form-check">
+                    <InputCheckbox class="form-check-input" @bind-Value="@cadastro.Termo"></InputCheckbox>
+                    <label class="form-check-label">
+                        Aceito os Termos de Uso
+                    </label>
+                    <ValidationMessage For="@(()=> cadastro.Termo)"/>
+                </div>
+            </div>
+        </div>
+        <div class="row tamanho2">
+            <div class="col-12 d-flex justify-content-center text-centerr">
+                <button class="btn btn-danger" type="refresh">
+                    <NavLink class="link" href="/usuario">
+                        <span aria-hidden="true"></span> Cancelar
+                    </NavLink>
+                </button>
+                <button class="btn btn-success" type="submit">Salvar</button>
+            </div>
+        </div>
+    </div>
+</EditForm>
+
+
+@code {
+
+    CadastroUsuario cadastro = new CadastroUsuario();
+
+    private async Task HandleValidSubmit(){
+        var teste = await
+        Http.PostAsJsonAsync("/usuario/Create", cadastro);
+    }
+
+    private void Create()
+    {
+         Console.WriteLine(cadastro.Titulo);
+         Console.WriteLine(cadastro.PrimeiroNome);
+         Console.WriteLine(cadastro.SegundoNome);
+         Console.WriteLine(cadastro.DataDeAniversario);
+         Console.WriteLine(cadastro.Email);
+         Console.WriteLine(cadastro.Senha);
+         Console.WriteLine(cadastro.ConfirmarSenha);
+         Console.WriteLine(cadastro.Termo);
+    }
+}
+
